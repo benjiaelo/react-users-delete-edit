@@ -1,51 +1,68 @@
 import React, { useState } from "react";
-import "./App.css";
-import { Container, Row, Col } from "react-bootstrap";
-import AddUserForm from "./AddUserForm";
-import AllUsers from "./AllUsers";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Card, Row, Col, Container } from "react-bootstrap";
+import AllUsers from "./components/AllUsers";
+import AddUserForm from "./components/AddUserForm";
 
 function App() {
-  const [user, setUser] = useState([
-    {
-      name: "Zidan",
-      phone: "0245339920",
-      location: "Madina",
-    },
-
+  const [users, setUsers] = useState([
     {
       name: "Kareem",
-      phone: "050337728",
-      location: "Airport City",
+      gen: 5,
+      email: "kareem@email.com",
+      id: "78478chukjchho3fw",
     },
-
     {
-      name: "Salah",
-      phone: "027229927",
-      location: "Osu",
+      name: "Nadia",
+      gen: 21,
+      email: "nadia@email .com",
+      id: "hhheiuchieih939u494",
+    },
+    {
+      name: "Nafis",
+      gen: 18,
+      email: "nafis@email .com",
+      id: "hhuchieih939u494",
     },
   ]);
-  const AddNewUser = (users) => {
-    setUser([
-      ...user,
-      { name: users.name, phone: users.phone, location: users.location },
-    ]);
+  const addNewUser = (user) => {
+    user.id = Math.random().toString();
+    setUsers([...users, user]);
+    console.log(user);
+  };
+
+  const deleteUser = (id) => {
+    // setUsers(users.filter((user) => user.id !== id));
+    setUsers(
+      users.filter((user) => {
+        if (user.id !== id) {
+          return user;
+        }
+      })
+    );
+  };
+  const EditUser = (id, newData) => {
+    setUsers(
+      users.map((user) => {
+        if (user.id === id) {
+          return newData;
+        }
+        return user;
+      })
+    );
   };
 
   return (
-    <div>
-      <Container>
-        <Row>
-          <Col md={6}>
-            <AddUserForm retrieve={AddNewUser} />
-          </Col>
-
-          <Col md={6}>
-            <AllUsers userData={user} />
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Container style={{ marginTop: "30px" }}>
+      <Row>
+        <Col>
+          <AddUserForm newUser={addNewUser} />
+        </Col>
+        <Col>
+          <AllUsers userData={users} editUser={EditUser} delete={deleteUser} />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
